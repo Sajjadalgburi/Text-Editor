@@ -17,6 +17,9 @@ module.exports = () => {
       path: path.resolve(__dirname, "dist"),
     },
     plugins: [
+      // using a plugin-in to load our html
+      new HtmlWebpackPlugin(),
+
       // injecting our own service worker
       new InjectManifest({
         swSrc: "./src-sw.js",
