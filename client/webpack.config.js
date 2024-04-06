@@ -26,14 +26,17 @@ module.exports = () => {
         icons: [
           {
             src: path.resolve("src/images/logo.png"),
-            sizes: [96, 128, 192, 256, 384, 512], // multiple sizes
+            sizes: [96, 128, 192, 256, 384, 512],
             destination: path.join("assets", "icons"),
           },
         ],
       }),
 
       // using a plugin-in to load our html
-      new HtmlWebpackPlugin(),
+      new HtmlWebpackPlugin({
+        template: "./index.html",
+        title: "J.A.T.E",
+      }),
 
       // injecting our own service worker
       new InjectManifest({
