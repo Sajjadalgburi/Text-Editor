@@ -19,10 +19,10 @@ export const putDb = async (content) => {
     const database = await openDB("jate", 1);
 
     // Start a transaction
-    const tx = database.transaction("JATE-vault", "readwrite");
+    const tx = database.transaction("jate", "readwrite");
 
     // Access the object store
-    const store = tx.objectStore("JATE-vault");
+    const store = tx.objectStore("jate");
 
     // Add content to the object store
     const request = store.put({ content: content });
@@ -45,10 +45,10 @@ export const getDb = async () => {
     const database = await openDB("jate", 1);
 
     // Start a transaction
-    const tx = database.transaction("JATE-vault", "readonly");
+    const tx = database.transaction("jate", "readonly");
 
     // Access the object store
-    const store = tx.objectStore("JATE-vault");
+    const store = tx.objectStore("jate");
 
     // Add content to the object store
     const request = store.getAll();
