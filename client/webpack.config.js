@@ -33,7 +33,10 @@ module.exports = () => {
       }),
 
       // using a plugin-in to load our html
-      new HtmlWebpackPlugin(),
+      new HtmlWebpackPlugin({
+        template: "./index.html",
+        title: "J.A.T.E",
+      }),
 
       // injecting our own service worker
       new InjectManifest({
