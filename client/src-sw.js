@@ -17,11 +17,31 @@ const pageCache = new CacheFirst({
       statuses: [0, 200],
     }),
     new ExpirationPlugin({
-      maxAgeSeconds: 30 * 24 * 60 * 60,
+      maxAgeSeconds: 30 * 24 * 60 * 60, // 30 days
     }),
   ],
 });
 
+// Warm the cache for specific URLs
+const urlsToCache = ["/index.html", "/"];
+urlsToCache.forEach((url) => {
+  registerRoute(
+    url,
+    new CacheFirst({
+      cacheName: "page-cache",
+      plugins: [
+        new CacheableResponsePlugin({
+          statuses: [0, 200],
+        }),
+        new ExpirationPlugin({
+          maxAgeSeconds: 30 * 24 * 60 * 60, // 30 days
+        }),
+      ],
+    })
+  );
+});
+
+// Cache static resources using Workbox recipes
 // Warm the cache for certain URLs
 warmStrategyCache({
   urls: ["/index.html", "/"],
