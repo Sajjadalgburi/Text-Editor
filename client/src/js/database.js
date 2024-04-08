@@ -56,7 +56,7 @@ export const getDb = async () => {
     // Wait for the operation to complete
     const results = await request;
 
-    return results;
+    return results?.value;
   } catch (error) {
     // Handle any errors that occur during the database operation
     console.error("Error adding content to database:", error);
