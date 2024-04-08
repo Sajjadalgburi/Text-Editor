@@ -1,6 +1,6 @@
 // Import necessary modules
-const { offlineFallback, warmStrategyCache } = require("workbox-recipes");
-const { CacheFirst } = require("workbox-strategies");
+const { warmStrategyCache } = require("workbox-recipes");
+const { CacheFirst, StaleWhileRevalidate } = require("workbox-strategies");
 const { registerRoute } = require("workbox-routing");
 const { CacheableResponsePlugin } = require("workbox-cacheable-response");
 const { ExpirationPlugin } = require("workbox-expiration");
@@ -56,23 +56,22 @@ registerRoute(
   }
 );
 
-// Implement asset caching
-const { staticResourceCache } = require("workbox-recipes");
-staticResourceCache();
+// // Implement asset caching
+// const { staticResourceCache } = require("workbox-recipes");
+// staticResourceCache();
 
-// Define routes for caching assets
+// Set up asset cache
 registerRoute(
-  /\.(?:js|css|png|gif|jpg|svg)$/,
-  new CacheFirst({
-    cacheName: "assets-cache",
+  // Here we define the callback function that will filter the requests we want to cache (in this case, JS and CSS files)
+  ({ request }) => ["style", "script", "worker"].includes(request.destination),
+  new StaleWhileRevalidate({
+    // Name of the cache storage.
+    cacheName: "asset-cache",
     plugins: [
-      new ExpirationPlugin({
-        maxEntries: 50,
-        maxAgeSeconds: 7 * 24 * 60 * 60, // 7 days
+      // This plugin will cache responses with these headers to a maximum-age of 30 days
+      new CacheableResponsePlugin({
+        statuses: [0, 200],
       }),
     ],
   })
 );
-
-// Implement offline fallback
-offlineFallback();
